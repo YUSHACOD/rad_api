@@ -9,6 +9,7 @@ import "C"
 import (
 	"fmt"
 	"unsafe"
+	"errors"
 )
 
 type RadCmd string
@@ -576,7 +577,7 @@ func (r *RadIpcState) Init() error {
 	if res == RD_SUCCESS {
 		r.is_connected = true
 	} else {
-		return fmt.Errorf(radErrorToString(res))
+		return errors.New(radErrorToString(res))
 	}
 
 	return nil
@@ -605,7 +606,7 @@ func (r *RadIpcState) SendCommand(cmd_str RadCmd, args string) error {
 		if res == 0 {
 			return nil
 		} else {
-			return fmt.Errorf(radErrorToString(res))
+			return fmt.Errorf("%s", radErrorToString(res))
 		}
 	} else {
 		return fmt.Errorf("Raddbg is not connected")
